@@ -17,6 +17,7 @@ class TaskService
         bool removeTask(const string& name);
         bool finishTask(const string& name);
         void printTasks(const string& day = "", const string & deadlineFilter = "", bool listFinished = false) const;
+        void printAvlTree() const;
 
     private:
         vector<Task> _tasks;

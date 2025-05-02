@@ -172,6 +172,11 @@ void TaskService::printTasks(const string& day, const string& deadlineDay, bool 
 	}
 }
 
+void TaskService::printAvlTree() const
+{
+	_deadlineTree.printTree();
+}
+
 // private
 Task* TaskService::findTask(const string& name)
 {

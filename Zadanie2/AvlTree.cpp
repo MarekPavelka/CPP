@@ -53,7 +53,7 @@ void AvlTree::printTree() const // utility for printing the tree to check the st
 {
 	int nodeCount = 0;
 	printTreeHelper(_root, 0, nodeCount, "root");
-	cout << "Number of nodes in the tree: " << nodeCount << endl;
+	cout << "Number of nodes: " << nodeCount << endl;
 	cout << "===============================" << endl;
 }
 

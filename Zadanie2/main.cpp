@@ -18,6 +18,8 @@ const string OPTION_PRIO = "priority";
 const string OPTION_DEADLINE = "deadline";
 const string OPTION_TODAY = "today";
 const string OPTION_TOMORROW = "tomorrow";
+const string OPTION_HELP = "help";
+const string OPTION_TREE = "tree";
 
 bool wasOptionProvided(ParseResult& optionsResult, string optionName);
 
@@ -41,7 +43,8 @@ int main(int argc, char* argv[])
 			(OPTION_LIST, "Print tasks")
 			(OPTION_TODAY, "Use today")
 			(OPTION_TOMORROW, "Use tomorrow date")
-			("h,help", "Print help");
+			("h,help", "Print help")
+			(OPTION_TREE, "Print AVL tree");
 
 		auto parsedOptions = options.parse(argc, argv);
 
@@ -117,19 +120,22 @@ int main(int argc, char* argv[])
 			bool printDoneTasks = parsedOptions.count(OPTION_DONE);
 			taskService.printTasks(day, deadline, printDoneTasks);
 		}
-		if (parsedOptions.count("help"))
+		else if (parsedOptions.count(OPTION_HELP))
 		{
 			cout << options.help() << endl;
-			return EXIT_SUCCESS;
 		}
+		else if (parsedOptions.count(OPTION_TREE))
+		{
+			taskService.printAvlTree();
+		}
+
+		EXIT_SUCCESS;
 	}
 	catch (const exception& ex)
 	{
 		cout << "Exception: " << ex.what() << endl;
 		return EXIT_FAILURE;
 	}
-
-	EXIT_SUCCESS;
 }
 
 bool wasOptionProvided(ParseResult& optionsResult, string optionName)
