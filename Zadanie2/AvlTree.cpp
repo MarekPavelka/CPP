@@ -1,6 +1,7 @@
 #include "AvlTree.h"
 #include "Task.h"
 #include <iostream>
+#include <cstring>
 
 AvlTree::AvlTree()
 {
