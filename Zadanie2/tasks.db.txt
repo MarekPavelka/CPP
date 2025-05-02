@@ -1,8 +1,0 @@
-FooBarBaz1|Buy black magnus|5|2025-05-02|0
-FooBarBaz2|Buy black magnus2|5|2025-05-02|1
-Task1|task1|5|2025-05-03|0
-Task2|task2|5|2025-05-03|1
-Task3|task3|5|2025-05-05|1
-Task4|task4|5|2025-05-11|1
-Task5|task5|5|2025-05-17|1
-Task6|task6|5|2025-05-04|1

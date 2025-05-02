@@ -25,13 +25,13 @@ void AvlTree::remove(const string& deadline, Task* task)
 }
 
 
-vector<Task*> AvlTree::findTasksByDeadline(const string& deadline) const 
+vector<Task*> AvlTree::findTasksByDeadline(const string& deadline) const
 {
 	AvlNode* node = _root;
 
 	while (node)
 	{
-		if (deadlineCompare(deadline, node->getDeadline()) < 0) 
+		if (deadlineCompare(deadline, node->getDeadline()) < 0)
 		{
 			node = node->getLeftNode();
 		}
@@ -48,7 +48,7 @@ vector<Task*> AvlTree::findTasksByDeadline(const string& deadline) const
 	return {};
 }
 
-void AvlTree::printTree() const
+void AvlTree::printTree() const // utility for printing the tree to check the structure
 {
 	int nodeCount = 0;
 	printTreeHelper(_root, 0, nodeCount, "root");
@@ -133,10 +133,10 @@ AvlNode* AvlTree::removeNode(AvlNode* node, const string& deadline, Task* task)
 	}
 	else
 	{
-		node->removeTask(task);  
+		node->removeTask(task);
 		if (node->getTasks().empty()) // if no tasks are left, remove the node
 		{
-			if (!node->getLeftNode()) 
+			if (!node->getLeftNode())
 			{
 				AvlNode* temp = node->getRightNode();
 				delete node;

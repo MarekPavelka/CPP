@@ -43,12 +43,16 @@ void TaskService::loadTasks()
 		getline(stream, deadline, '|');
 		stream >> finished;
 
+		if (name.empty())
+		{
+			cout << "Skipping malformed task line: " << line << endl;
+			continue;
+		}
+
 		auto task = new Task(name, description, priority, deadline, finished);
 		_tasks.push_back(*task);
 		_deadlineTree.insert(task); // create tree
-	}	
-
-	_deadlineTree.printTree(); // print tree
+	}
 }
 
 void TaskService::saveTasks() const
@@ -58,10 +62,10 @@ void TaskService::saveTasks() const
 	for (const auto& task : _tasks)
 	{
 		file << task.getName() << '|'
-			 << task.getDescription() << '|'
-		     << task.getPriority() << '|'
-			 << task.getDeadline() << '|'
-			 << task.getFinished() << '\n';
+			<< task.getDescription() << '|'
+			<< task.getPriority() << '|'
+			<< task.getDeadline() << '|'
+			<< task.getFinished() << '\n';
 	}
 }
 
@@ -126,10 +130,11 @@ void TaskService::printTasks(const string& day, const string& deadlineDay, bool 
 		auto tasks = _deadlineTree.findTasksByDeadline(deadlineDay);
 		for (auto task : tasks)
 		{
-			if (printFinishedTasks && !task->getFinished())
+			if (task->getFinished() != printFinishedTasks)
 			{
 				continue;
 			}
+
 			printTaskInfo(*task);
 		}
 	}
@@ -138,10 +143,11 @@ void TaskService::printTasks(const string& day, const string& deadlineDay, bool 
 		auto tasks = _deadlineTree.findTasksByDeadline(day);
 		for (auto task : tasks)
 		{
-			if (printFinishedTasks && !task->getFinished())
+			if (task->getFinished() != printFinishedTasks)
 			{
 				continue;
 			}
+
 			printTaskInfo(*task);
 		}
 	}
@@ -149,11 +155,19 @@ void TaskService::printTasks(const string& day, const string& deadlineDay, bool 
 	{
 		for (const auto& task : _tasks)
 		{
-			if (printFinishedTasks && !task.getFinished())
+			if (printFinishedTasks)
 			{
-				continue;
+				if (task.getFinished() != printFinishedTasks)
+				{
+					continue;
+				}
+
+				printTaskInfo(task);
 			}
-			printTaskInfo(task);
+			else
+			{
+				printTaskInfo(task);
+			}
 		}
 	}
 }
@@ -170,17 +184,6 @@ Task* TaskService::findTask(const string& name)
 	}
 
 	return nullptr;
-}
-
-void TaskService::printHelp() const
-{
-	cout << "---------- AVAILABLE COMMANDS ----------" << endl
-		 << endl
-	 	 << "add -t|--title <name> [--desc <description>] [-p|--priority <priority>] [-d|--deadline <date>]" << endl
-	     << "remove -t|--title <name>" << endl
-		 << "done -t|--title <name>" << endl
-		 << "list [-d|--deadline <date>] [--today] [--tomorrow] [--done]" << endl
-		 << "-h|--help" << endl;
 }
 
 void TaskService::printTaskInfo(const Task& task) const

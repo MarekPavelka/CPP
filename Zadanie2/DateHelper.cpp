@@ -9,36 +9,36 @@ using namespace chrono;
 
 string getTodayDate()
 {
-    auto now = system_clock::now();
-    time_t nowSeconds = system_clock::to_time_t(now);
-    tm localNowTime;
+	auto now = system_clock::now();
+	time_t nowSeconds = system_clock::to_time_t(now);
+	tm localNowTime;
 
 #if defined(_WIN32) || defined(_WIN64)
-    localtime_s(&localNowTime, &nowSeconds); 
+	localtime_s(&localNowTime, &nowSeconds);
 #else
-    localtime_r(&nowSeconds, &localNowTime);
+	localtime_r(&nowSeconds, &localNowTime);
 #endif
 
-    ostringstream stream;
-    stream << put_time(&localNowTime, "%Y-%m-%d");
+	ostringstream stream;
+	stream << put_time(&localNowTime, "%Y-%m-%d");
 
-    return stream.str();
+	return stream.str();
 }
 
 string getTomorrowDate()
 {
-    auto tomorrow = system_clock::now() + hours(24);
-    time_t tomorrowSeconds = system_clock::to_time_t(tomorrow);
-    tm localTomorrowTime;
+	auto tomorrow = system_clock::now() + hours(24);
+	time_t tomorrowSeconds = system_clock::to_time_t(tomorrow);
+	tm localTomorrowTime;
 
 #if defined(_WIN32) || defined(_WIN64)
-    localtime_s(&localTomorrowTime, &tomorrowSeconds);
+	localtime_s(&localTomorrowTime, &tomorrowSeconds);
 #else
-    localtime_r(&tomorrowSeconds, &localTomorrowTime);
+	localtime_r(&tomorrowSeconds, &localTomorrowTime);
 #endif
 
-    ostringstream stream;
-    stream << put_time(&localTomorrowTime, "%Y-%m-%d");
+	ostringstream stream;
+	stream << put_time(&localTomorrowTime, "%Y-%m-%d");
 
-    return stream.str();
+	return stream.str();
 }
