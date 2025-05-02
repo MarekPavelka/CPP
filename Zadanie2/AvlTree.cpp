@@ -133,8 +133,12 @@ AvlNode* AvlTree::removeNode(AvlNode* node, const string& deadline, Task* task)
 	}
 	else
 	{
-		node->removeTask(task);
-		if (node->getTasks().empty()) // if no tasks are left, remove the node
+		if (task)
+		{
+			node->removeTask(task);
+		}
+
+		if (!task || node->getTasks().empty()) // delete node if task is null or no tasks left
 		{
 			if (!node->getLeftNode())
 			{
@@ -150,17 +154,17 @@ AvlNode* AvlTree::removeNode(AvlNode* node, const string& deadline, Task* task)
 			}
 
 			// node with two children
-			AvlNode* temp = node->getRightNode();
-			while (temp && temp->getLeftNode())
+			AvlNode* successor = node->getRightNode();
+			while (successor && successor->getLeftNode())
 			{
-				temp = temp->getLeftNode();
+				successor = successor->getLeftNode();
 			}
 
-			if (temp)
+			if (successor)
 			{
-				node->setDeadline(temp->getDeadline());
-				node->setTasks(temp->getTasks());
-				node->setRightNode(removeNode(node->getRightNode(), temp->getDeadline(), task));
+				node->setDeadline(successor->getDeadline()); // copy deadline form successor
+				node->setTasks(successor->getTasks()); // copy tasks from successor
+				node->setRightNode(removeNode(node->getRightNode(), successor->getDeadline(), nullptr)); // remove successor
 			}
 		}
 	}
