@@ -1,10 +1,14 @@
 #include "PhoneBookService.h"
+#include "InputValidator.h"
 #include <iostream>
 
 using namespace std;
+using namespace InputValidator;
 
-int getValidInput(const string& prompt);
-string trim(const string& input);
+const int FIRST_OPTION = 1;
+const int LAST_OPTION = 6;
+
+string createOptionsPrompt(const int from, const int to);
 
 int main()
 {
@@ -21,29 +25,47 @@ int main()
 		cout << "6. Exit" << endl;
 		cout << "==========================" << endl;
 
-		int input = getValidInput("Choose an option (1-6): ");
+		string prompt = createOptionsPrompt(FIRST_OPTION, LAST_OPTION);
+		int input = getValidInput(prompt, FIRST_OPTION, LAST_OPTION);
 
 		switch (input)
 		{
-		case 1:
-			phoneBookService.addContact();
-			break;
-		case 2:
-			phoneBookService.findContact();
-			break;
-		case 3:
-			phoneBookService.deleteContact();
-			break;
-		case 4:
-			phoneBookService.addToCallQueue();
-			break;
-		case 5:
-			phoneBookService.processCallQueue();
-			break;
-		case 6:
-			return EXIT_SUCCESS;
-		default:
-			cout << "Invalid option." << endl;
+			case 1:
+			{
+				phoneBookService.addContact();
+				break;
+			}
+			case 2:
+			{
+				string lastName = getValidInput("Enter last name: ");
+				phoneBookService.findContact(lastName);
+				break;
+			}
+			case 3:
+			{
+				string lastName = getValidInput("Enter last name: ");
+				phoneBookService.deleteContact(lastName);
+				break;
+			}
+			case 4:
+			{
+				string lastName = getValidInput("Enter last name: ");
+				phoneBookService.addToCallQueue(lastName);
+				break;
+			}
+			case 5:
+			{
+				phoneBookService.processCallQueue();
+				break;
+			}
+			case 6:
+			{
+				return EXIT_SUCCESS;
+			}
+			default:
+			{
+				cout << "Invalid option." << endl;
+			}
 		}
 
 		return EXIT_SUCCESS;
@@ -55,57 +77,9 @@ int main()
 	}
 }
 
-int getValidInput(const string& prompt)
+string createOptionsPrompt(const int from, const int to)
 {
-	string input;
-	int parsedInput;
-
-	while (true)
-	{
-		cout << prompt;
-		getline(cin, input);
-		input = trim(input);
-
-		if (cin.eof()) 
-		{
-			cout << "Input closed. Exiting..." << endl;
-			exit(EXIT_SUCCESS); 
-		}
-
-		if (input.empty())
-		{
-			cout << "Please select the option..." << endl;
-			continue;
-		}
-
-		try
-		{
-			parsedInput = stoi(input);
-			bool isChoiceValid = parsedInput >= 1 && parsedInput <= 6;
-			if (isChoiceValid)
-			{
-				return parsedInput;
-			}
-
-			cout << "Please enter a number between 1 and 6." << endl;
-		}
-		catch (const std::exception&)
-		{
-			cout << "Please enter a valid number." << endl;
-		}
-	}
-
-	return parsedInput;
-}
-
-string trim(const string& input)
-{
-	auto start = input.find_first_not_of(" \t\n\r");
-	auto end = input.find_last_not_of(" \t\n\r");
-	if (start == string::npos || end == string::npos)
-	{
-		return "";
-	}
-
-	return input.substr(start, end - start + 1);
+	return string("Choose an option (") +
+		to_string(from) + "-" +
+		to_string(to) + "): ";
 }
