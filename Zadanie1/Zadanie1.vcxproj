@@ -131,11 +131,14 @@
     <ClCompile Include="InputValidator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhoneBookService.cpp" />
+    <ClCompile Include="PhoneBookTrie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contact.h" />
     <ClInclude Include="InputValidator.h" />
     <ClInclude Include="PhoneBookService.h" />
+    <ClInclude Include="PhoneBookTrie.h" />
+    <ClInclude Include="TrieNode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

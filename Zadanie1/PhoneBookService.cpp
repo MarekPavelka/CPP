@@ -20,7 +20,9 @@ void PhoneBookService::addContact()
 	string firstName = getValidInput("Enter first name: ");
 	string lastName = getValidInput("Enter surname: ");
 	string phoneNumber = getValidInput("Enter phone number: ");
-	// trie.insert()
+
+	_trie.insert(lastName, firstName, phoneNumber);
+
 	cout << "Contact " << firstName << " " << lastName << " saved successfully." << endl;
 }
 
@@ -40,7 +42,7 @@ void PhoneBookService::deleteContact(const string& lastName)
 	string confirm = getValidInput("Confirm delete (Y/N): ");
 	if (confirm == "Y")
 	{
-		bool wasDeleted = false; // trie.remove()
+		bool wasDeleted = _trie.remove(contact.lastName, contact.firstName);
 		if (wasDeleted)
 		{
 			cout << "Successfully deleted contact " << contact.firstName << " " << contact.lastName << "." << endl;

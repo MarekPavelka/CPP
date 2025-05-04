@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PhoneBookTrie.h"
 #include "Contact.h"
 #include <string>
 #include <optional>
@@ -15,5 +16,6 @@ class PhoneBookService
 		void processCallQueue();
 
 	private:
+		PhoneBookTrie _trie;
 		std::queue<Contact> _callQueue;		
 };
