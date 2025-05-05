@@ -19,7 +19,7 @@ optional<Contact> PhoneBookService::findContact(const string& lastName) const
 		return nullopt;
 	}
 
-	cout << "Found entries:" << endl;
+	cout << "Contacts with last name " << lastName << ":" << endl;
 
 	int i = 1;
 	vector<string> firstNames;
@@ -55,27 +55,25 @@ void PhoneBookService::deleteContact(const string& lastName)
 {
 	Contact contact;
 	auto contactResult = findContact(lastName);
-	if (contactResult.has_value())
+	if (!contactResult.has_value())
 	{
-		contact = contactResult.value();
+		return;
+	}
+
+	if (!wasConfirmed("Confirm delete (Y/N): "))
+	{
+		return;
+	}
+
+	contact = contactResult.value();
+	bool wasDeleted = _trie.removeNode(contact.lastName, contact.firstName);
+	if (wasDeleted)
+	{
+		cout << "Successfully deleted contact " << contact.firstName << " " << contact.lastName << "." << endl << endl;
 	}
 	else
 	{
-		cout << "Contact with last name " << lastName << " not found." << endl << endl;
-	}
-
-	string confirm = getValidInput("Confirm delete (Y/N): ");
-	if (confirm == "Y")
-	{
-		bool wasDeleted = _trie.removeNode(contact.lastName, contact.firstName);
-		if (wasDeleted)
-		{
-			cout << "Successfully deleted contact " << contact.firstName << " " << contact.lastName << "." << endl << endl;
-		}
-		else
-		{
-			cout << "Delete failed for contact " << contact.firstName << " " << contact.lastName << "." << endl << endl;
-		}
+		cout << "Delete failed for contact " << contact.firstName << " " << contact.lastName << "." << endl << endl;
 	}
 }
 
@@ -85,24 +83,23 @@ void PhoneBookService::addToCallQueue(const string& lastName)
 	auto contactResult = findContact(lastName);
 	if (!contactResult.has_value())
 	{
-		cout << "Contact with last name " << lastName << " not found." << endl << endl;
 		return;
-		
 	}
 
+	if (!wasConfirmed("Add to call queue (Y/N): "))
+	{
+		return;
+	}
+	
 	contact = contactResult.value();
-	if (isInCallQueue(contact)) 
+	if (isInCallQueue(contact))
 	{
 		cout << "Contact " << contact.firstName << " " << contact.lastName << " is already in the call queue." << endl << endl;
 		return;
 	}
 
-	string confirm = getValidInput("Add to call queue (Y/N): ");
-	if (confirm == "Y")
-	{
-		_callQueue.push(contact);
-		cout << "Contact " << contact.firstName << " " << contact.lastName << " was added to the call queue." << endl << endl;
-	}
+	_callQueue.push(contact);
+	cout << "Contact " << contact.firstName << " " << contact.lastName << " was added to the call queue." << endl << endl;
 }
 
 void PhoneBookService::processCallQueue()
@@ -112,15 +109,12 @@ void PhoneBookService::processCallQueue()
 		Contact contact = _callQueue.front();
 		cout << "Call: " << contact.firstName << " " << contact.lastName << " - " << contact.phoneNumber << endl;
 
-		string confirm = getValidInput("Call completed? (Y/N): ");
-		if (confirm == "Y")
-		{
-			_callQueue.pop();
-		}
-		else
+		if (!wasConfirmed("Call completed? (Y/N): "))
 		{
 			break;
 		}
+
+		_callQueue.pop();
 	}
 
 	if (_callQueue.empty())

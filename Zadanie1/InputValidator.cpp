@@ -6,6 +6,25 @@ using namespace std;
 
 namespace InputValidator
 {
+	bool wasConfirmed(const string& prompt)
+	{
+		while (true)
+		{
+			string input = getValidInput(prompt);
+
+			if (input == "Y" || input == "y")
+			{
+				return true;
+			}
+			if (input == "N" || input == "n")
+			{
+				return false;
+			}
+
+			cout << "Please enter Y or N." << endl;
+		}
+	}
+
 	string getValidInput(const string& prompt)
 	{
 		string input;
@@ -53,7 +72,7 @@ namespace InputValidator
 
 				cout << "Please enter a number between " << from << " and " << to << endl;
 			}
-			catch (const std::exception&)
+			catch (const exception&)
 			{
 				cout << "Please enter a valid number." << endl;
 			}

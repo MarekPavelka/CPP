@@ -8,6 +8,7 @@ using namespace InputValidator;
 const int FIRST_OPTION = 1;
 const int LAST_OPTION = 6;
 
+void printMenu();
 string createOptionsPrompt(const int from, const int to);
 
 int main()
@@ -18,14 +19,7 @@ int main()
 
 		while (true)
 		{
-			cout << "========== MENU ==========" << endl;
-			cout << "1. Add contact" << endl;
-			cout << "2. Find contact" << endl;
-			cout << "3. Delete contact" << endl;
-			cout << "4. Add to call queue" << endl;
-			cout << "5. Start call queue" << endl;
-			cout << "6. Exit" << endl;
-			cout << "==========================" << endl;
+			printMenu();
 
 			string prompt = createOptionsPrompt(FIRST_OPTION, LAST_OPTION);
 			int input = getValidInput(prompt, FIRST_OPTION, LAST_OPTION);
@@ -73,11 +67,23 @@ int main()
 
 		return EXIT_SUCCESS;
 	}
-	catch (const std::exception& ex)
+	catch (const exception& ex)
 	{
 		cout << "Exception: " << ex.what() << endl;
 		return EXIT_FAILURE;
 	}
+}
+
+void printMenu()
+{
+	cout << "========== MENU ==========" << endl;
+	cout << "1. Add contact" << endl;
+	cout << "2. Find contact" << endl;
+	cout << "3. Delete contact" << endl;
+	cout << "4. Add to call queue" << endl;
+	cout << "5. Start call queue" << endl;
+	cout << "6. Exit" << endl;
+	cout << "==========================" << endl;
 }
 
 string createOptionsPrompt(const int from, const int to)
