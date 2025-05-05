@@ -13,18 +13,18 @@ using namespace InputValidator;
 optional<Contact> PhoneBookService::findContact(const string& lastName) const
 {
 	TrieNode* node = _trie.searchNode(lastName);
-	if (!node) 
+	if (!node)
 	{
 		cout << "Contact with last name " << lastName << " not found." << endl << endl;
 		return nullopt;
-	}	
+	}
 
 	cout << "Found entries:" << endl;
-	
+
 	int i = 1;
 	vector<string> firstNames;
 
-	for (const auto& entry : node->entries) 
+	for (const auto& entry : node->entries)
 	{
 		cout << i++ << ". " << entry.first << endl;
 		firstNames.push_back(entry.first);
@@ -83,13 +83,18 @@ void PhoneBookService::addToCallQueue(const string& lastName)
 {
 	Contact contact;
 	auto contactResult = findContact(lastName);
-	if (contactResult.has_value())
-	{
-		contact = contactResult.value();
-	}
-	else
+	if (!contactResult.has_value())
 	{
 		cout << "Contact with last name " << lastName << " not found." << endl << endl;
+		return;
+		
+	}
+
+	contact = contactResult.value();
+	if (isInCallQueue(contact)) 
+	{
+		cout << "Contact " << contact.firstName << " " << contact.lastName << " is already in the call queue." << endl << endl;
+		return;
 	}
 
 	string confirm = getValidInput("Add to call queue (Y/N): ");
@@ -122,4 +127,27 @@ void PhoneBookService::processCallQueue()
 	{
 		cout << "Call queue is empty." << endl << endl;
 	}
+}
+
+// private
+bool PhoneBookService::isInCallQueue(const Contact& contact) const
+{
+	queue<Contact> tempQueue = _callQueue;
+
+	while (!tempQueue.empty())
+	{
+		const Contact& queuedContact = tempQueue.front();
+		bool wasFound = queuedContact.firstName == contact.firstName
+			&& queuedContact.lastName == contact.lastName
+			&& queuedContact.phoneNumber == contact.phoneNumber;
+
+		if (wasFound)
+		{
+			return true;
+		}
+
+		tempQueue.pop();
+	}
+
+	return false;
 }

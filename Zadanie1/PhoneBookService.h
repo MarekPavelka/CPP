@@ -18,4 +18,6 @@ class PhoneBookService
 	private:
 		PhoneBookTrie _trie;
 		std::queue<Contact> _callQueue;		
+
+		bool isInCallQueue(const Contact& contact) const;
 };
