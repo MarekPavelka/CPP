@@ -13,5 +13,6 @@ class PhoneBookTrie
 
     private:
         std::unique_ptr<TrieNode> _root = std::make_unique<TrieNode>();
+        bool removeHelper(std::unique_ptr<TrieNode>& node, const std::string& surname, const std::string& firstname, size_t depth);
 };
 

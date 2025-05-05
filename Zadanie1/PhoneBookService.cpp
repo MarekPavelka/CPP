@@ -15,15 +15,9 @@ optional<Contact> PhoneBookService::findContact(const string& lastName) const
 	TrieNode* node = _trie.searchNode(lastName);
 	if (!node) 
 	{
-		cout << "Contact with last name " << lastName << "not found" << endl << endl;
+		cout << "Contact with last name " << lastName << " not found." << endl << endl;
 		return nullopt;
-	}
-
-	if (node->entries.empty())
-	{
-		cout << "No first names found for last name " << lastName << endl << endl;
-		return nullopt;
-	}
+	}	
 
 	cout << "Found entries:" << endl;
 	
@@ -67,7 +61,7 @@ void PhoneBookService::deleteContact(const string& lastName)
 	}
 	else
 	{
-		cout << "Contact with last name " << lastName << "not found" << endl << endl;
+		cout << "Contact with last name " << lastName << " not found." << endl << endl;
 	}
 
 	string confirm = getValidInput("Confirm delete (Y/N): ");
@@ -95,14 +89,14 @@ void PhoneBookService::addToCallQueue(const string& lastName)
 	}
 	else
 	{
-		cout << "Contact with last name " << lastName << "not found" << endl << endl;
+		cout << "Contact with last name " << lastName << " not found." << endl << endl;
 	}
 
 	string confirm = getValidInput("Add to call queue (Y/N): ");
 	if (confirm == "Y")
 	{
 		_callQueue.push(contact);
-		cout << "Contact " << contact.firstName << " " << contact.lastName << "was added to the call queue." << endl << endl;
+		cout << "Contact " << contact.firstName << " " << contact.lastName << " was added to the call queue." << endl << endl;
 	}
 }
 
