@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void PhoneBookTrie::insert(const string& lastName, const string& firstName, const string& phoneNumber)
+void PhoneBookTrie::insertNode(const string& lastName, const string& firstName, const string& phoneNumber)
 {
 	TrieNode* node = _root.get();
 	for (char character : lastName) 
@@ -40,7 +40,7 @@ TrieNode* PhoneBookTrie::searchNode(const string& lastName) const
 	return node->isEnd ? node : nullptr;
 }
 
-bool PhoneBookTrie::remove(const string& lastName, const string& firstName)
+bool PhoneBookTrie::removeNode(const string& lastName, const string& firstName)
 {
 	TrieNode* node = searchNode(lastName);
 	if (node && node->entries.count(firstName)) 
